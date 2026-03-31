@@ -1,0 +1,14 @@
+application next.js jsx de ventes bijouteries
+1)application web tres tres resopnsive avec telephone et tablette et ordinateur
+2)couleurs blanc et gold ou noir et gold(lightmode/darkmode)
+3)interface client avec: (en head bar):
+-page compte(premier page)(nom , prenom , numero , mdp , verifier mdp , boutton login )(tous les champs obligatoires)
+    -page de produits avec les produits avec filtre par categorie , sous categorie et par prix
+    -page de panier avec les produits avec filtre par categorie et par prix
+    -page de historique des commande avec les produits avec filtre par categorie et par prix
+4)langue arabe et francais boutton en haut a droit (ar/fr) avec boutton light and dark mode
+5)chaque article a  1)ref , 2)des images , 3)grammage (rezine) , 4)prix par 1 gramme en dt 5)prix total(grammage*prix par 1 gramme en dt) 6)boutton ajouter au panier(avec +/- en nombre d articles) 7)description 8)categorie 9)sous categorie
+6)tous les articles trier par date (les premiers articles sont les deriners ajouter)
+7)carte pour chaque article avec les information de l article et boutton ajouter au panier(avec +/- en nombre d articles) (le client peut zommer en image d article )(le client peut choisir l image a afficher)(le client peut voir les details de l article) 
+8)les images des articles avec ses references sont dans dossier imgs (example k1f.png (est une photo du reference k1 avec un fond(f) , k1-2f.png (est une photo du reference k1 avec un fond(f) et un autre angle ) k2m.png (est une photo du reference k2 avec dans une main(bague en main)(m) , k2-2m.png (est une photo du reference k2 avec dans une main(bague en main)(m) et un autre angle ) )  
+9)application tres jolie et moderne avec des beaux effets et designe et tres responsive 

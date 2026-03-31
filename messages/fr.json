@@ -1,0 +1,142 @@
+{
+  "Header": {
+    "home": "Accueil",
+    "products": "Produits",
+    "orders": "Commandes",
+    "contact": "Contact",
+    "cart": "Panier"
+  },
+  "Footer": {
+    "aboutText": "L'élégance à l'état pur. Découvrez notre collection exclusive de bijoux de luxe alliant tradition et design moderne.",
+    "linksTitle": "Liens Rapides",
+    "products": "Nos Produits",
+    "cart": "Panier",
+    "orders": "Mes Commandes",
+    "account": "Mon Compte",
+    "contact": "Contactez-nous",
+    "contactTitle": "Contact",
+    "socialTitle": "Suivez-nous",
+    "rights": "Mezen Bijouterie. Tous droits réservés.",
+    "signature": "Création de prestige"
+  },
+  "Home": {
+    "heroTitle": "L'Élégance Intemporelle",
+    "heroDesc": "Découvrez notre nouvelle collection de bijoux artisanaux, où le design moderne rencontre la tradition.",
+    "heroBtn": "Explorer la Collection",
+    "heroAlt": "Collier de luxe",
+    "collection": "Nos Collections",
+    "exploreAll": "Découvrir tout",
+    "categories": {
+      "rings": "Bagues",
+      "necklaces": "Colliers",
+      "bracelets": "Bracelets",
+      "earrings": "Boucles d'oreilles"
+    },
+    "features": {
+      "artisanInfo": "Artisanat",
+      "artisanDesc": "Chaque pièce est fabriquée à la main avec passion et précision par nos maîtres artisans.",
+      "exclusiveInfo": "Design Exclusif",
+      "exclusiveDesc": "Des créations uniques qui soulignent votre personnalité et votre élégance.",
+      "guaranteeInfo": "Garantie à Vie",
+      "guaranteeDesc": "Nous garantissons la qualité et la durabilité de tous nos bijoux sans limite de temps."
+    }
+  },
+  "Account": {
+    "welcome": "Bienvenue",
+    "createAccount": "Créer un compte",
+    "loginDesc": "Connectez-vous pour accéder à vos commandes et votre panier.",
+    "registerDesc": "Rejoignez Mezen pour une expérience sur-mesure.",
+    "firstName": "Prénom *",
+    "lastName": "Nom *",
+    "phone": "Numéro de téléphone *",
+    "password": "Mot de passe *",
+    "verifyPassword": "Vérifier mot de passe *",
+    "loginBtn": "Se connecter",
+    "registerBtn": "S'inscrire",
+    "newToMezen": "Nouveau chez Mezen ?",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "createAccountBtn": "Créer un compte",
+    "loginLink": "Connectez-vous"
+  },
+  "Products": {
+    "title": "Notre Collection",
+    "description": "Découvrez notre sélection exclusive de bijoux de luxe, façonnés avec passion et précision.",
+    "noItems": "Aucun bijou trouvé pour ces critères.",
+    "filters": {
+      "title": "Filtres",
+      "category": "Catégorie",
+      "subCategory": "Sous-catégorie",
+      "priceMax": "Prix Max",
+      "sortBy": "Trier par",
+      "allCategories": "Toutes les catégories",
+      "allSubCategories": "Toutes les sous-catégories",
+      "sortNewest": "Plus récents",
+      "sortPriceAsc": "Prix croissant",
+      "sortPriceDesc": "Prix décroissant",
+      "rings": "Bagues",
+      "necklaces": "Colliers",
+      "bracelets": "Bracelets",
+      "earrings": "Boucles d'oreilles",
+      "bagues": "Bagues",
+      "colliers": "Colliers",
+      "boucles": "Boucles d'oreilles",
+      "wedding": "Mariage",
+      "engagement": "Fiançailles",
+      "daily": "Quotidien",
+      "mariage": "Mariage",
+      "fiancailles": "Fiançailles",
+      "quotidien": "Quotidien"
+    }
+  },
+  "Cart": {
+    "title": "Votre Panier",
+    "empty": "Votre panier est tristement vide.",
+    "explore": "Découvrir notre collection",
+    "itemTotal": "Total produit",
+    "summary": "Résumé",
+    "subtotal": "Sous-total",
+    "shipping": "Frais de livraison",
+    "shippingInfo": "Calculé à l'étape suivante",
+    "total": "Total",
+    "checkout": "Procéder au paiement",
+    "securityInfo": "Paiement 100% sécurisé. Retours sous 30 jours."
+  },
+  "Orders": {
+    "title": "Historique des Commandes",
+    "noOrders": "Aucune commande",
+    "noOrdersDesc": "Vous n'avez pas encore passé de commande. Explorez notre catalogue pour découvrir des joyaux exceptionnels."
+  },
+  "Data": {
+    "K1": { "name": "Collier Éternité", "desc": "Un collier magnifique pour marquer vos moments les plus précieux." },
+    "K2": { "name": "Bague Saphir", "desc": "Bague élégante ornée de détails subtils en or jaune." },
+    "K3": { "name": "Bracelet Royale", "desc": "Un design épuré pour un porté quotidien luxueux." },
+    "K4": { "name": "Boucles Célestes", "desc": "Boucles d'oreilles pendantes au design étoilé." },
+    "K5": { "name": "Collier Aube", "desc": "Fin et délicat, parfait pour s'accorder avec toutes vos tenues." },
+    "K6": { "name": "Bague Destinée", "desc": "La pièce maîtresse pour une demande inoubliable." },
+    "K7": { "name": "Parure Florale", "desc": "Un ensemble inspiré de la nature." },
+    "K8": { "name": "Bracelet Infini", "desc": "Symbole éternel gravé dans l'or." },
+    "K9": { "name": "Bague Diamant", "desc": "L'éclat pur d'un diamant serti sur or." },
+    "K10": { "name": "Collier Minimal", "desc": "La beauté dans la simplicité." },
+    "K11": { "name": "Boucles Perles", "desc": "L'association de l'or et de perles de culture." },
+    "K12": { "name": "Bague Solitaire", "desc": "L'iconique bague de fiançailles." },
+    "K13": { "name": "Bracelet Jonc", "desc": "Un bracelet texturé d'une rare élégance." },
+    "K14": { "name": "Collier Majesté", "desc": "Une pièce imposante pour les grandes occasions." }
+  },
+  "Contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Une question, une demande sur-mesure ou besoin de conseils ? Notre équipe d'experts est à votre disposition.",
+    "shopTitle": "Notre Boutique",
+    "shopAddress": "123 Avenue de l'Élégance\n75000 Paris, France",
+    "phoneTitle": "Téléphone",
+    "emailTitle": "Email",
+    "hoursTitle": "Heures d'ouverture",
+    "hours": "Lun - Sam : 10h00 - 19h00",
+    "formTitle": "Envoyez-nous un message",
+    "nameLabel": "Nom",
+    "emailLabel": "Email",
+    "phoneLabel": "Téléphone",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Comment pouvons-nous vous aider ?",
+    "sendBtn": "Envoyer le message"
+  }
+}

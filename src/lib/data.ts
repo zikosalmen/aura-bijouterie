@@ -1,0 +1,172 @@
+import { Product } from "@/components/ProductCard";
+
+export const products: Product[] = [
+  {
+    id: "p1",
+    reference: "K1",
+    name: "Collier Éternité",
+    description: "Un collier magnifique pour marquer vos moments les plus précieux.",
+    category: "colliers",
+    subCategory: "mariage",
+    images: ["/imgs/k1f.png", "/imgs/k1-2f.png", "/imgs/k1m.png"],
+    weightGrams: 12.5,
+    pricePerGram: 65,
+    dateAdded: "2024-01-10T10:00:00Z"
+  },
+  {
+    id: "p2",
+    reference: "K2",
+    name: "Bague Saphir",
+    description: "Bague élégante ornée de détails subtils en or jaune.",
+    category: "bagues",
+    subCategory: "fiancailles",
+    images: ["/imgs/k2f.png", "/imgs/k2-2f.png", "/imgs/k2m.png"],
+    weightGrams: 4.2,
+    pricePerGram: 68,
+    dateAdded: "2024-01-12T10:00:00Z"
+  },
+  {
+    id: "p3",
+    reference: "K3",
+    name: "Bracelet Royale",
+    description: "Un design épuré pour un porté quotidien luxueux.",
+    category: "bracelets",
+    subCategory: "quotidien",
+    images: ["/imgs/k3f.png", "/imgs/k3m.png"],
+    weightGrams: 15.0,
+    pricePerGram: 60,
+    dateAdded: "2024-01-15T10:00:00Z"
+  },
+  {
+    id: "p4",
+    reference: "K4",
+    name: "Boucles Célestes",
+    description: "Boucles d'oreilles pendantes au design étoilé.",
+    category: "boucles",
+    subCategory: "mariage",
+    images: ["/imgs/k4f.png", "/imgs/k4m.png"],
+    weightGrams: 6.8,
+    pricePerGram: 62,
+    dateAdded: "2024-01-16T10:00:00Z"
+  },
+  {
+    id: "p5",
+    reference: "K5",
+    name: "Collier Aube",
+    description: "Fin et délicat, parfait pour s'accorder avec toutes vos tenues.",
+    category: "colliers",
+    subCategory: "quotidien",
+    images: ["/imgs/k5f.png", "/imgs/k5m.png"],
+    weightGrams: 8.5,
+    pricePerGram: 61,
+    dateAdded: "2024-01-20T10:00:00Z"
+  },
+  {
+    id: "p6",
+    reference: "K6",
+    name: "Bague Destinée",
+    description: "La pièce maîtresse pour une demande inoubliable.",
+    category: "bagues",
+    subCategory: "fiancailles",
+    images: ["/imgs/k6f.png", "/imgs/k6m.jpg", "/imgs/k6-2m.jpg"],
+    weightGrams: 5.5,
+    pricePerGram: 70,
+    dateAdded: "2024-01-25T10:00:00Z"
+  },
+  {
+    id: "p7",
+    reference: "K7",
+    name: "Parure Florale",
+    description: "Un ensemble inspiré de la nature.",
+    category: "colliers",
+    subCategory: "mariage",
+    images: ["/imgs/k7f.jpg", "/imgs/k7m.png"],
+    weightGrams: 22.0,
+    pricePerGram: 58,
+    dateAdded: "2024-02-01T10:00:00Z"
+  },
+  {
+    id: "p8",
+    reference: "K8",
+    name: "Bracelet Infini",
+    description: "Symbole éternel gravé dans l'or.",
+    category: "bracelets",
+    subCategory: "fiancailles",
+    images: ["/imgs/k8f.png", "/imgs/k8-2m.png", "/imgs/k8m.png"],
+    weightGrams: 11.2,
+    pricePerGram: 63,
+    dateAdded: "2024-02-05T10:00:00Z"
+  },
+  {
+    id: "p9",
+    reference: "K9",
+    name: "Bague Diamant",
+    description: "L'éclat pur d'un diamant serti sur or.",
+    category: "bagues",
+    subCategory: "mariage",
+    images: ["/imgs/k9f.png", "/imgs/k9m.png"],
+    weightGrams: 3.8,
+    pricePerGram: 120,
+    dateAdded: "2024-02-10T10:00:00Z"
+  },
+  {
+    id: "p10",
+    reference: "K10",
+    name: "Collier Minimal",
+    description: "La beauté dans la simplicité.",
+    category: "colliers",
+    subCategory: "quotidien",
+    images: ["/imgs/k10f.png", "/imgs/k10m.png"],
+    weightGrams: 7.0,
+    pricePerGram: 59,
+    dateAdded: "2024-02-15T10:00:00Z"
+  },
+  {
+    id: "p11",
+    reference: "K11",
+    name: "Boucles Perles",
+    description: "L'association de l'or et de perles de culture.",
+    category: "boucles",
+    subCategory: "quotidien",
+    images: ["/imgs/k11f.png", "/imgs/k11m.png"],
+    weightGrams: 5.1,
+    pricePerGram: 66,
+    dateAdded: "2024-02-20T10:00:00Z"
+  },
+  {
+    id: "p12",
+    reference: "K12",
+    name: "Bague Solitaire",
+    description: "L'iconique bague de fiançailles.",
+    category: "bagues",
+    subCategory: "fiancailles",
+    images: ["/imgs/k12f.png", "/imgs/k12m.jpg"],
+    weightGrams: 4.5,
+    pricePerGram: 85,
+    dateAdded: "2024-02-25T10:00:00Z"
+  },
+  {
+    id: "p13",
+    reference: "K13",
+    name: "Bracelet Jonc",
+    description: "Un bracelet texturé d'une rare élégance.",
+    category: "bracelets",
+    subCategory: "mariage",
+    images: ["/imgs/k13f.png", "/imgs/k13m.jpg", "/imgs/k13-2m.png"],
+    weightGrams: 18.5,
+    pricePerGram: 64,
+    dateAdded: "2024-03-01T10:00:00Z"
+  },
+  {
+    id: "p14",
+    reference: "K14",
+    name: "Collier Majesté",
+    description: "Une pièce imposante pour les grandes occasions.",
+    category: "colliers",
+    subCategory: "mariage",
+    images: ["/imgs/k14f.png", "/imgs/k14m.png", "/imgs/k14-2m.jpg"],
+    weightGrams: 25.0,
+    pricePerGram: 55,
+    dateAdded: "2024-03-05T10:00:00Z"
+  }
+];
