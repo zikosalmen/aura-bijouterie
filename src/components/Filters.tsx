@@ -1,97 +1,134 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Filter, ChevronDown } from "lucide-react";
+import { Filter } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-export default function Filters({ onFilterChange }: { onFilterChange?: (filters: { category: string; subCategory: string; priceMax: number; sortBy: string }) => void }) {
-  const t = useTranslations('Products.filters');
-  const [isOpen, setIsOpen] = useState(false);
+const CATEGORIES = [
+  { value: "all", labelKey: "allCategories" },
+  { value: "bagues", labelKey: "rings" },
+  { value: "colliers", labelKey: "necklaces" },
+  { value: "bracelets", labelKey: "bracelets" },
+  { value: "boucles", labelKey: "earrings" },
+];
+
+const SUB_CATEGORIES: Record<string, { value: string; labelKey: string }[]> = {
+  all: [],
+  bagues: [
+    { value: "mariage", labelKey: "wedding" },
+    { value: "fiancailles", labelKey: "engagement" },
+    { value: "quotidien", labelKey: "daily" },
+  ],
+  colliers: [
+    { value: "mariage", labelKey: "wedding" },
+    { value: "quotidien", labelKey: "daily" },
+  ],
+  bracelets: [
+    { value: "fiancailles", labelKey: "engagement" },
+    { value: "mariage", labelKey: "wedding" },
+    { value: "quotidien", labelKey: "daily" },
+  ],
+  boucles: [
+    { value: "mariage", labelKey: "wedding" },
+    { value: "quotidien", labelKey: "daily" },
+  ],
+};
+
+export default function Filters({
+  onFilterChange,
+}: {
+  onFilterChange?: (filters: { category: string; subCategory: string }) => void;
+}) {
+  const t = useTranslations("Products.filters");
   const [category, setCategory] = useState("all");
   const [subCategory, setSubCategory] = useState("all");
-  const [priceMax, setPriceMax] = useState(20000);
-  const [sortBy, setSortBy] = useState("newest");
+
+  const subCats = category !== "all" ? SUB_CATEGORIES[category] ?? [] : [];
 
   useEffect(() => {
     if (onFilterChange) {
-      onFilterChange({ category, subCategory, priceMax, sortBy });
+      onFilterChange({ category, subCategory });
     }
-  }, [category, subCategory, priceMax, sortBy, onFilterChange]);
+  }, [category, subCategory, onFilterChange]);
+
+  const handleCategoryChange = (val: string) => {
+    setCategory(val);
+    setSubCategory("all");
+  };
 
   return (
-    <div className="bg-background border border-gold/20 rounded-2xl p-4 md:p-6 shadow-sm mb-8 relative z-20">
-      <div className="flex items-center justify-between md:hidden mb-4 cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
-        <h3 className="font-serif font-bold flex items-center gap-2">
-          <Filter size={18} className="text-gold" /> {t('title')}
-        </h3>
-        <button className="p-2 bg-foreground/5 rounded-full">
-          <ChevronDown size={18} className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
-        </button>
+    <div className="mb-8 space-y-3">
+      {/* Row 1 – Catégories */}
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="flex items-center gap-1.5 text-sm text-foreground/50 font-semibold mr-2 shrink-0">
+          <Filter size={15} className="text-gold" />
+          {t("category")}
+        </span>
+        <div className="flex items-center gap-2 flex-wrap">
+          {CATEGORIES.map((cat) => {
+            const active = category === cat.value;
+            return (
+              <button
+                key={cat.value}
+                onClick={() => handleCategoryChange(cat.value)}
+                className={`px-4 py-1.5 rounded-full text-sm font-semibold border transition-all duration-200 whitespace-nowrap
+                  ${
+                    active
+                      ? "bg-gold text-white border-gold shadow-md scale-105"
+                      : "bg-background text-foreground/70 border-foreground/15 hover:border-gold/50 hover:text-gold"
+                  }`}
+              >
+                {t(cat.labelKey)}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      <div className={`${isOpen ? "block" : "hidden"} md:block space-y-6 md:space-y-0 md:flex flex-wrap items-end gap-6`}>
-        {/* Catégories */}
-        <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-semibold mb-2">{t('category')}</label>
-          <select 
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="w-full bg-foreground/5 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-gold/50 outline-none appearance-none cursor-pointer rtl:pr-4 rtl:pl-10"
-          >
-            <option value="all">{t('allCategories')}</option>
-            <option value="bagues">{t('rings')}</option>
-            <option value="colliers">{t('necklaces')}</option>
-            <option value="bracelets">{t('bracelets')}</option>
-            <option value="boucles">{t('earrings')}</option>
-          </select>
-        </div>
+      {/* Divider */}
+      <div className="h-px bg-gold/15 w-full" />
 
-        {/* Sous-catégories */}
-        <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-semibold mb-2">{t('subCategory')}</label>
-          <select 
-            value={subCategory}
-            onChange={(e) => setSubCategory(e.target.value)}
-            className="w-full bg-foreground/5 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-gold/50 outline-none appearance-none cursor-pointer rtl:pr-4 rtl:pl-10"
-          >
-            <option value="all">{t('allSubCategories')}</option>
-            <option value="mariage">{t('wedding')}</option>
-            <option value="fiancailles">{t('engagement')}</option>
-            <option value="quotidien">{t('daily')}</option>
-          </select>
-        </div>
-
-        {/* Prix */}
-        <div className="flex-1 min-w-[200px]">
-          <div className="flex items-center justify-between mb-2">
-            <label className="text-sm font-semibold">{t('priceMax')}</label>
-            <span className="text-sm font-bold text-gold">{priceMax} €</span>
+      {/* Row 2 – Sous-catégories (visible si une catégorie est sélectionnée) */}
+      {category !== "all" && subCats.length > 0 && (
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-sm text-foreground/40 font-semibold mr-2 shrink-0 flex items-center gap-1">
+            <span className="text-gold">{t(CATEGORIES.find(c => c.value === category)!.labelKey)}</span>
+            <span>›</span>
+            {t("subCategory")}
+          </span>
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* "Tous" */}
+            <button
+              onClick={() => setSubCategory("all")}
+              className={`px-3 py-1 rounded-full text-sm font-semibold border transition-all duration-200
+                ${
+                  subCategory === "all"
+                    ? "bg-foreground text-background border-foreground shadow-sm"
+                    : "bg-background text-foreground/60 border-foreground/15 hover:border-foreground/40"
+                }`}
+            >
+              {t("allSubCategories").replace("Toutes les ", "").replace("جميع الفئات", "الكل")}
+            </button>
+            {subCats.map((sub) => {
+              const active = subCategory === sub.value;
+              return (
+                <button
+                  key={sub.value}
+                  onClick={() => setSubCategory(sub.value)}
+                  className={`px-3 py-1 rounded-full text-sm font-semibold border transition-all duration-200 whitespace-nowrap
+                    ${
+                      active
+                        ? "bg-foreground text-background border-foreground shadow-sm"
+                        : "bg-background text-foreground/60 border-foreground/15 hover:border-foreground/40"
+                    }`}
+                >
+                  {t(sub.labelKey)}
+                </button>
+              );
+            })}
           </div>
-          <input 
-            type="range" 
-            min="100" 
-            max="20000" 
-            step="100"
-            value={priceMax}
-            onChange={(e) => setPriceMax(Number(e.target.value))}
-            className="w-full h-2 bg-gold/20 rounded-lg appearance-none cursor-pointer accent-gold"
-          />
         </div>
-
-        {/* Tri */}
-        <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-semibold mb-2">{t('sortBy')}</label>
-          <select 
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="w-full bg-foreground/5 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-gold/50 outline-none appearance-none cursor-pointer rtl:pr-4 rtl:pl-10"
-          >
-            <option value="newest">{t('sortNewest')}</option>
-            <option value="price_asc">{t('sortPriceAsc')}</option>
-            <option value="price_desc">{t('sortPriceDesc')}</option>
-          </select>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

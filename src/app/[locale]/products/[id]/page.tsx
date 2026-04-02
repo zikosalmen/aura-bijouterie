@@ -37,7 +37,6 @@ export default function ProductDetailPage() {
     );
   }
 
-  const translatedName = td(`${product.reference}.name`);
   const translatedDesc = td(`${product.reference}.desc`);
   const totalPrice = product.weightGrams * product.pricePerGram;
 
@@ -55,7 +54,7 @@ export default function ProductDetailPage() {
         <span>/</span>
         <Link href="/products" className="hover:text-gold transition-colors">{t('title')}</Link>
         <span>/</span>
-        <span className="text-foreground font-medium">{translatedName}</span>
+        <span className="text-foreground font-medium font-mono text-gold">{product.reference}</span>
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
@@ -77,9 +76,10 @@ export default function ProductDetailPage() {
               >
                 <Image
                   src={product.images[currentImageIdx]}
-                  alt={translatedName}
+                  alt={product.reference}
                   fill
-                  className="object-contain p-8 group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </motion.div>
             </AnimatePresence>
@@ -116,7 +116,7 @@ export default function ProductDetailPage() {
                     currentImageIdx === idx ? "border-gold shadow-md" : "border-transparent opacity-60 hover:opacity-90"
                   }`}
                 >
-                  <Image src={img} alt="" fill className="object-contain p-2" />
+                  <Image src={img} alt="" fill sizes="80px" className="object-cover" />
                 </button>
               ))}
             </div>
@@ -126,20 +126,22 @@ export default function ProductDetailPage() {
         {/* Product Info */}
         <div className="space-y-6">
           {/* Ref and Category */}
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-xs font-mono text-foreground/50 bg-foreground/5 px-3 py-1 rounded-full">
-              Réf: {product.reference}
-            </span>
-            <span className="text-xs font-semibold text-gold bg-gold/10 border border-gold/20 px-3 py-1 rounded-full">
-              {t(`filters.${product.category}`)}
-            </span>
-            <span className="text-xs font-semibold text-foreground/50 bg-foreground/5 px-3 py-1 rounded-full">
-              {t(`filters.${product.subCategory}`)}
-            </span>
+          <div className="space-y-3">
+            <div className="flex items-baseline gap-2">
+              <span className="text-foreground text-base font-semibold font-mono">Réf:</span>
+              <span className="font-mono font-bold text-4xl md:text-5xl tracking-widest text-gold">{product.reference}</span>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-semibold text-gold bg-gold/10 border border-gold/20 px-3 py-1 rounded-full">
+                {t(`filters.${product.category}`)}
+              </span>
+              <span className="text-xs font-semibold text-foreground/50 bg-foreground/5 px-3 py-1 rounded-full">
+                {t(`filters.${product.subCategory}`)}
+              </span>
+            </div>
           </div>
 
           <div>
-            <h1 className="font-serif text-3xl md:text-4xl font-bold mb-3 rtl:text-right">{translatedName}</h1>
             <p className="text-foreground/70 text-lg leading-relaxed rtl:text-right">{translatedDesc}</p>
           </div>
 
@@ -225,8 +227,9 @@ export default function ProductDetailPage() {
             <div className="relative w-full max-w-3xl aspect-square">
               <Image
                 src={product.images[currentImageIdx]}
-                alt={translatedName}
+                alt={product.reference}
                 fill
+                sizes="100vw"
                 className="object-contain"
               />
             </div>

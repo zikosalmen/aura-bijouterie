@@ -53,7 +53,7 @@ export default function CartPage() {
                   <div className="relative w-24 h-24 md:w-32 md:h-32 bg-foreground/5 rounded-xl overflow-hidden shrink-0">
                     <Image 
                       src={item.product.images[0]} 
-                      alt={item.product.name} 
+                      alt={item.product.reference} 
                       fill 
                       sizes="(max-width: 768px) 100px, 150px"
                       className="object-cover"
@@ -63,8 +63,10 @@ export default function CartPage() {
                   <div className="flex-1 flex flex-col justify-between">
                     <div className="flex justify-between items-start gap-4">
                       <div>
-                        <p className="text-xs text-foreground/50 font-mono mb-1">Réf: {item.product.reference}</p>
-                        <h3 className="font-serif text-lg md:text-xl font-bold line-clamp-1">{item.product.name}</h3>
+                        <div className="flex items-baseline gap-1.5 mb-1">
+                          <span className="text-foreground text-sm font-semibold font-mono">Réf:</span>
+                          <span className="font-mono font-bold text-2xl tracking-wider text-gold">{item.product.reference}</span>
+                        </div>
                         <p className="text-sm text-foreground/60 mt-1">{item.product.weightGrams}g × {formatPrice(item.product.pricePerGram, locale)}/g</p>
                       </div>
                       <button 

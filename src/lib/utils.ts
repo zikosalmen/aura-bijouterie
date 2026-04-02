@@ -5,9 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatPrice(amount: number, locale: string = "fr-FR", currency: string = "EUR") {
-  return new Intl.NumberFormat(locale, {
+export function formatPrice(amount: number, locale: string = "fr-FR") {
+  const formatter = new Intl.NumberFormat(locale === "ar" ? "ar-TN" : "fr-TN", {
     style: "currency",
-    currency: currency,
-  }).format(amount);
+    currency: "TND",
+  });
+  
+  // Custom replacement to display "DT" instead of "TND"
+  return formatter.format(amount).replace("TND", "DT");
 }

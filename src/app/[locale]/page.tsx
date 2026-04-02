@@ -36,7 +36,7 @@ export default function HomePage() {
               transition={{ duration: 0.8 }}
             >
               <span className="inline-block text-gold font-semibold text-sm tracking-widest uppercase mb-6 border border-gold/30 px-4 py-1 rounded-full bg-gold/5">
-                Mezen Bijouterie
+                Aura Design
               </span>
               <h1 className="font-serif text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight">
                 {t('heroTitle')}

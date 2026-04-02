@@ -23,7 +23,7 @@ export default function ContactPage() {
             {[
               { icon: MapPin, title: t('shopTitle'), content: t('shopAddress') },
               { icon: Phone, title: t('phoneTitle'), content: "+212 6 00 00 00 00" },
-              { icon: Mail, title: t('emailTitle'), content: "contact@mezen.com" },
+              { icon: Mail, title: t('emailTitle'), content: "contact@aura-design.com" },
               { icon: Clock, title: t('hoursTitle'), content: t('hours') },
             ].map((item) => (
               <div key={item.title} className="flex items-start gap-4 rtl:flex-row-reverse">

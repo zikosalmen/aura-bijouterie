@@ -11,6 +11,8 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Header() {
   const [mounted, setMounted] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const totalItems = useCartStore((state) => state.getTotalItems());
   
   const locale = useLocale();
@@ -22,6 +24,25 @@ export default function Header() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
+
+  // Handle scroll events to show/hide header
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Cache-le si on descend, Montre-le si on monte
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        setIsVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -43,14 +64,20 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-background/80 border-b border-gold/20 shadow-sm">
+      <header 
+        className={`sticky top-0 z-50 w-full backdrop-blur-md bg-background/80 border-b border-gold/20 shadow-sm transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"}`}
+      >
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-full bg-gold flex items-center justify-center text-white font-serif font-bold text-xl shadow-md transition-transform duration-300 group-hover:scale-110">
-              M
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative w-12 h-12 overflow-hidden transition-transform duration-300 group-hover:scale-110">
+              <img 
+                src="/aura_logo.png" 
+                alt="Aura Design Logo" 
+                className="w-full h-full object-contain"
+              />
             </div>
             <span className="font-serif text-2xl font-bold text-foreground tracking-wide">
-              Mezen
+              Aura Design
             </span>
           </Link>
 
@@ -112,7 +139,7 @@ export default function Header() {
             >
               {/* Header */}
               <div className="p-6 border-b border-gold/20 flex items-center justify-between">
-                <span className="font-serif text-xl font-bold">Mezen</span>
+                <span className="font-serif text-xl font-bold">Aura Design</span>
                 <button onClick={() => setMobileOpen(false)} className="p-1 hover:text-gold transition-colors">
                   <X size={20} />
                 </button>

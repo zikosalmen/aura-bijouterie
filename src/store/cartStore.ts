@@ -68,7 +68,7 @@ export const useCartStore = create<CartState>()(
       clearCart: () => set({ items: [] }),
     }),
     {
-      name: 'mezen-cart-storage',
+      name: 'aura-cart-storage',
     }
   )
 );

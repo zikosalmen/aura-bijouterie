@@ -21,7 +21,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Mezen Bijouterie",
+  title: "Aura Design",
   description: "Bijouterie de luxe – Élégance et raffinement",
 };
 
