@@ -78,7 +78,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 alt={`${product.reference} - image ${idx + 1}`}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className={`object-cover transition-transform duration-700 ease-out ${isHovered ? 'scale-110' : 'scale-100'}`}
+                className={`object-cover transition-transform duration-700 ease-out`}
               />
             </Link>
           ))}
@@ -97,41 +97,42 @@ export default function ProductCard({ product }: { product: Product }) {
         )}
       </div>
 
-      {/* Contenu complet (Ancien Style) */}
-      <div className="p-5 flex-1 flex flex-col">
+      {/* Contenu complet (Ancien Style revisité pour mobile) */}
+      <div className="p-4 sm:p-5 flex-1 flex flex-col min-w-0 w-full">
         <Link href={`/products/${product.id}`} className="mb-3 block">
-          <span className="inline-flex items-center gap-1.5 font-mono font-bold text-2xl tracking-wider text-gold transition-colors">
-            <span className="text-foreground text-base font-semibold">Réf:</span>
-            {product.reference}
+          <span className="inline-flex items-center gap-1.5 font-mono font-bold text-xl sm:text-2xl tracking-wider text-gold transition-colors">
+            <span className="text-foreground text-sm sm:text-base font-semibold">Réf:</span>
+            <span className="break-all">{product.reference}</span>
           </span>
         </Link>
-        <p className="text-sm text-foreground/70 mb-4 line-clamp-2 leading-relaxed flex-1 rtl:text-right">
+        <p className="text-xs sm:text-sm text-foreground/70 mb-4 line-clamp-2 leading-relaxed flex-1 rtl:text-right">
           {translatedDesc}
         </p>
 
         {/* Tableau Poids/Prix */}
-        <div className="grid grid-cols-2 gap-2 text-sm mb-4 bg-foreground/5 p-3 rounded-xl border border-border/50">
+        <div className="grid grid-cols-2 gap-2 text-xs sm:text-sm mb-4 bg-foreground/5 p-3 rounded-xl border border-border/50">
           <div className="rtl:text-right">
-            <span className="block text-xs text-foreground/50">Poids</span>
+            <span className="block text-[10px] sm:text-xs text-foreground/50">Poids</span>
             <span className="font-semibold">{product.weightGrams}g</span>
           </div>
           <div className="rtl:text-right">
-            <span className="block text-xs text-foreground/50">Prix/g</span>
+            <span className="block text-[10px] sm:text-xs text-foreground/50">Prix/g</span>
             <span className="font-semibold">{formatPrice(product.pricePerGram, locale)}</span>
           </div>
         </div>
 
-        <div className="flex items-center justify-between mt-auto">
-          <div className="rtl:text-right">
-            <span className="block text-xs text-foreground/50">Prix Total</span>
-            <span className="font-bold text-xl text-gold">{formatPrice(totalPrice, locale)}</span>
+        {/* Pied de carte, s'enroule si l'espace est insuffisant */}
+        <div className="flex flex-wrap sm:flex-nowrap items-end sm:items-center justify-between mt-auto gap-4">
+          <div className="rtl:text-right flex-shrink-0 w-full xs:w-auto flex justify-between xs:block items-end">
+            <span className="block text-[11px] sm:text-xs text-foreground/50">Prix Total</span>
+            <span className="font-bold text-lg sm:text-xl text-gold">{formatPrice(totalPrice, locale)}</span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="flex items-center bg-foreground/5 rounded-xl p-1.5 border border-border/50 flex-1 me-4">
+          <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+            <div className="flex items-center bg-foreground/5 rounded-xl p-1.5 border border-border/50 flex-1 justify-between">
               <button 
                 onClick={(e) => { e.preventDefault(); setQuantity(Math.max(1, quantity - 1)); }}
-                className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center rounded-lg hover:bg-background shadow-sm transition-colors text-foreground/70"
+                className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center rounded-lg hover:bg-background shadow-sm transition-colors text-foreground/70 focus:outline-none"
               >
                 <Minus size={18} />
               </button>
@@ -144,12 +145,12 @@ export default function ProductCard({ product }: { product: Product }) {
                   const val = parseInt(e.target.value);
                   if (!isNaN(val) && val > 0) setQuantity(val);
                 }}
-                className="w-12 sm:w-16 bg-transparent text-center font-bold text-base sm:text-lg outline-none focus:ring-2 focus:ring-gold/30 rounded"
+                className="w-10 sm:w-14 bg-transparent text-center font-bold text-base sm:text-lg outline-none focus:ring-2 focus:ring-gold/30 rounded"
               />
               
               <button 
                 onClick={(e) => { e.preventDefault(); setQuantity(quantity + 1); }}
-                className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center rounded-lg hover:bg-background shadow-sm transition-colors text-foreground/70"
+                className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center rounded-lg hover:bg-background shadow-sm transition-colors text-foreground/70 focus:outline-none"
               >
                 <Plus size={18} />
               </button>
@@ -157,7 +158,7 @@ export default function ProductCard({ product }: { product: Product }) {
             
             <button 
               onClick={handleAddToCart}
-              className="bg-foreground text-background w-12 h-12 rounded-xl flex items-center justify-center hover:bg-gold hover:text-white transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 shrink-0"
+              className="bg-foreground text-background w-12 h-12 rounded-xl flex items-center justify-center hover:bg-gold hover:text-white transition-all duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 shrink-0"
             >
               <ShoppingCart size={20} />
             </button>
