@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { products } from "@/lib/data";
+import { Product } from "@/components/ProductCard";
+import { fetchProductById } from "@/lib/products";
 import { formatPrice } from "@/lib/utils";
 import { ShoppingCart, ArrowLeft, Check, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
@@ -14,7 +15,8 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function ProductDetailPage() {
   const params = useParams();
   const id = params.id as string;
-  const product = products.find((p) => p.id === id);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
   
   const [currentImageIdx, setCurrentImageIdx] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -25,6 +27,23 @@ export default function ProductDetailPage() {
   const t = useTranslations('Products');
   const td = useTranslations('Data');
   const locale = useLocale();
+
+  useEffect(() => {
+    async function load() {
+      const data = await fetchProductById(id);
+      setProduct(data || null);
+      setLoading(false);
+    }
+    load();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-20 text-center">
+        <p className="text-xl text-foreground/60">Loading...</p>
+      </div>
+    );
+  }
 
   if (!product) {
     return (

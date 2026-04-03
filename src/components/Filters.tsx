@@ -57,26 +57,25 @@ export default function Filters({
   };
 
   return (
-    <div className="mb-8 space-y-3">
-      {/* Row 1 – Catégories */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <span className="flex items-center gap-1.5 text-sm text-foreground/50 font-semibold mr-2 shrink-0">
-          <Filter size={15} className="text-gold" />
-          {t("category")}
+    <div className="mb-6 sm:mb-8 space-y-3">
+      {/* Row 1 – Catégories scroll horizontale sur mobile */}
+      <div className="flex items-center gap-3">
+        <span className="flex items-center gap-1.5 text-xs text-foreground/50 font-semibold shrink-0">
+          <Filter size={13} className="text-gold" />
+          <span className="hidden sm:inline">{t("category")}</span>
         </span>
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {CATEGORIES.map((cat) => {
             const active = category === cat.value;
             return (
               <button
                 key={cat.value}
                 onClick={() => handleCategoryChange(cat.value)}
-                className={`px-4 py-1.5 rounded-full text-sm font-semibold border transition-all duration-200 whitespace-nowrap
-                  ${
-                    active
-                      ? "bg-gold text-white border-gold shadow-md scale-105"
-                      : "bg-background text-foreground/70 border-foreground/15 hover:border-gold/50 hover:text-gold"
-                  }`}
+                className={`px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-all duration-200 whitespace-nowrap shrink-0 ${
+                  active
+                    ? "bg-gold text-white border-gold shadow-md"
+                    : "bg-background text-foreground/70 border-foreground/15 hover:border-gold/50 hover:text-gold"
+                }`}
               >
                 {t(cat.labelKey)}
               </button>
@@ -88,45 +87,36 @@ export default function Filters({
       {/* Divider */}
       <div className="h-px bg-gold/15 w-full" />
 
-      {/* Row 2 – Sous-catégories (visible si une catégorie est sélectionnée) */}
+      {/* Row 2 – Sous-catégories */}
       {category !== "all" && subCats.length > 0 && (
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-sm text-foreground/40 font-semibold mr-2 shrink-0 flex items-center gap-1">
-            <span className="text-gold">{t(CATEGORIES.find(c => c.value === category)!.labelKey)}</span>
-            <span>›</span>
-            {t("subCategory")}
-          </span>
-          <div className="flex items-center gap-2 flex-wrap">
-            {/* "Tous" */}
-            <button
-              onClick={() => setSubCategory("all")}
-              className={`px-3 py-1 rounded-full text-sm font-semibold border transition-all duration-200
-                ${
-                  subCategory === "all"
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <span className="text-xs text-gold font-semibold shrink-0">›</span>
+          <button
+            onClick={() => setSubCategory("all")}
+            className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all duration-200 whitespace-nowrap shrink-0 ${
+              subCategory === "all"
+                ? "bg-foreground text-background border-foreground shadow-sm"
+                : "bg-background text-foreground/60 border-foreground/15 hover:border-foreground/40"
+            }`}
+          >
+            Tous
+          </button>
+          {subCats.map((sub) => {
+            const active = subCategory === sub.value;
+            return (
+              <button
+                key={sub.value}
+                onClick={() => setSubCategory(sub.value)}
+                className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all duration-200 whitespace-nowrap shrink-0 ${
+                  active
                     ? "bg-foreground text-background border-foreground shadow-sm"
                     : "bg-background text-foreground/60 border-foreground/15 hover:border-foreground/40"
                 }`}
-            >
-              {t("allSubCategories").replace("Toutes les ", "").replace("جميع الفئات", "الكل")}
-            </button>
-            {subCats.map((sub) => {
-              const active = subCategory === sub.value;
-              return (
-                <button
-                  key={sub.value}
-                  onClick={() => setSubCategory(sub.value)}
-                  className={`px-3 py-1 rounded-full text-sm font-semibold border transition-all duration-200 whitespace-nowrap
-                    ${
-                      active
-                        ? "bg-foreground text-background border-foreground shadow-sm"
-                        : "bg-background text-foreground/60 border-foreground/15 hover:border-foreground/40"
-                    }`}
-                >
-                  {t(sub.labelKey)}
-                </button>
-              );
-            })}
-          </div>
+              >
+                {t(sub.labelKey)}
+              </button>
+            );
+          })}
         </div>
       )}
     </div>
