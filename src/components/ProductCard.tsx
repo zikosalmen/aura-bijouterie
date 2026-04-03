@@ -165,7 +165,16 @@ export default function ProductCard({
               >
                 <Minus size={14} />
               </button>
-              <span className="w-7 text-center font-bold text-sm select-none">{quantity}</span>
+              <input
+                type="number"
+                min="1"
+                value={quantity || ""}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value);
+                  if (!isNaN(val) && val > 0) setQuantity(val);
+                }}
+                className="w-10 sm:w-12 bg-transparent text-center font-bold text-sm sm:text-base outline-none focus:ring-2 focus:ring-gold/30 rounded"
+              />
               <button
                 onClick={(e) => { e.preventDefault(); setQuantity(quantity + 1); }}
                 className="w-8 h-8 flex items-center justify-center rounded-r-xl hover:bg-foreground/10 transition-colors text-foreground/70"

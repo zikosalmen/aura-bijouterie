@@ -192,7 +192,16 @@ export default function ProductDetailPage() {
                 >
                   −
                 </button>
-                <span className="w-12 text-center font-bold text-lg">{quantity}</span>
+                <input
+                  type="number"
+                  min="1"
+                  value={quantity || ""}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value);
+                    if (!isNaN(val) && val > 0) setQuantity(val);
+                  }}
+                  className="w-16 bg-transparent text-center font-bold text-lg outline-none focus:ring-2 focus:ring-gold/30 rounded-xl"
+                />
                 <button
                   onClick={() => setQuantity(quantity + 1)}
                   className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-background shadow-sm transition-colors text-foreground/70 font-bold text-lg"

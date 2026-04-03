@@ -86,7 +86,16 @@ export default function CartPage() {
                         >
                           <Minus size={16} />
                         </button>
-                        <span className="w-10 text-center font-medium">{item.quantity}</span>
+                        <input
+                          type="number"
+                          min="1"
+                          value={item.quantity || ""}
+                          onChange={(e) => {
+                            const val = parseInt(e.target.value);
+                            if (!isNaN(val) && val > 0) updateQuantity(item.product.id, val);
+                          }}
+                          className="w-12 bg-transparent text-center font-medium text-base outline-none focus:ring-2 focus:ring-gold/30 rounded"
+                        />
                         <button 
                           onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
                           className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-background shadow-sm transition-colors text-foreground/70"

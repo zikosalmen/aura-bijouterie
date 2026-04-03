@@ -12,6 +12,7 @@ export default function Header() {
   const [mounted, setMounted] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const totalItems = useCartStore((state) => state.getTotalItems());
 
   const locale = useLocale();
@@ -22,7 +23,18 @@ export default function Header() {
   useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
+    let lastY = window.scrollY;
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      setScrolled(currentY > 10);
+      // Hide on scroll down (only after 80px), show on scroll up
+      if (currentY > lastY && currentY > 80) {
+        setHidden(true);
+      } else if (currentY < lastY) {
+        setHidden(false);
+      }
+      lastY = currentY;
+    };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -48,6 +60,8 @@ export default function Header() {
           scrolled
             ? "backdrop-blur-md bg-background/90 border-b border-gold/20 shadow-md"
             : "bg-background/70 border-b border-transparent"
+        } ${
+          hidden && !mobileOpen ? "-translate-y-full" : "translate-y-0"
         }`}
       >
         <div className="container mx-auto px-3 sm:px-4 h-16 md:h-20 flex items-center justify-between gap-2">
@@ -79,21 +93,21 @@ export default function Header() {
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-            {/* Language toggle */}
+          <div className="flex items-center gap-1 sm:gap-3 shrink-0">
+            {/* Language toggle — visible on all screens */}
             <button
               onClick={toggleLang}
-              className="hidden sm:flex items-center gap-1 hover:text-gold transition-colors group px-2 py-1 rounded-lg hover:bg-gold/10"
+              className="flex items-center gap-1 hover:text-gold transition-colors group px-2 py-1.5 rounded-lg hover:bg-gold/10"
             >
-              <Globe size={16} className="group-hover:rotate-12 transition-transform" />
+              <Globe size={15} className="group-hover:rotate-12 transition-transform" />
               <span className="text-xs font-bold uppercase">{locale}</span>
             </button>
 
             <ThemeToggle />
 
-            {/* Cart */}
+            {/* Cart — visible on all screens */}
             <Link href="/cart" className="relative p-1.5 hover:text-gold transition-colors group">
-              <ShoppingBag size={22} className="group-hover:scale-105 transition-transform" />
+              <ShoppingBag size={21} className="group-hover:scale-105 transition-transform" />
               {mounted && totalItems > 0 && (
                 <span className="absolute -top-0.5 -right-1 bg-gold text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-sm">
                   {totalItems > 9 ? "9+" : totalItems}
