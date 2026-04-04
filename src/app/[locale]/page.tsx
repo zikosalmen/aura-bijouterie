@@ -15,9 +15,17 @@ import ProductCard, { Product } from "@/components/ProductCard";
 function ScrollScrubVideo() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const mainProgressBarRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const subProgressRefs = useRef<(HTMLDivElement | null)[]>([]);
+  
   const rafRef = useRef<number | null>(null);
+  const targetP = useRef(0);
+  const currentP = useRef(0);
+  
   const [mounted, setMounted] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const activeIdxRef = useRef(0);
 
   const captions = [
     {
@@ -37,57 +45,100 @@ function ScrollScrubVideo() {
     },
   ];
 
-  const activeIdx = mounted
-    ? Math.min(Math.floor(progress * captions.length), captions.length - 1)
-    : 0;
+  // Synchronized scroll updates
+  const onScroll = useCallback(() => {
+    // Only schedule one animation frame per paint cycle (prevents stutter & lag)
+    if (rafRef.current) return;
 
-  const scrub = useCallback(() => {
-    const el = containerRef.current;
-    const video = videoRef.current;
-    if (!el || !video || !video.duration) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null; // Clear lock
 
-    const rect = el.getBoundingClientRect();
-    const scrollable = el.offsetHeight - window.innerHeight;
-    if (scrollable <= 0) return;
-    const scrolled = Math.max(0, -rect.top);
-    const p = Math.min(1, scrolled / scrollable);
+      const el = containerRef.current;
+      const video = videoRef.current;
+      if (!el || !video || !video.duration) return;
 
-    setProgress(p);
-    // Direct DOM write — no paint delay
-    video.currentTime = p * video.duration;
-  }, []);
+      const rect = el.getBoundingClientRect();
+      const scrollable = el.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) return;
+
+      // Calculate pure un-delayed progress
+      const p = Math.min(1, Math.max(0, -rect.top / scrollable));
+
+      // 1. Precise Video Scrubbing
+      const targetTime = p * video.duration;
+      // The condition avoids redundant assignments which can cause H.264 decoding stutters
+      if (Math.abs(video.currentTime - targetTime) > 0.01) {
+        // Fast seek is preferred on Safari but standard currentTime handles all browsers
+        video.currentTime = targetTime;
+      }
+
+      // 2. Direct Progress Bar
+      if (mainProgressBarRef.current) {
+        mainProgressBarRef.current.style.width = `${p * 100}%`;
+      }
+
+      // 3. Direct CTA display
+      if (ctaRef.current) {
+        const showCTA = p > 0.88;
+        ctaRef.current.style.opacity = showCTA ? "1" : "0";
+        ctaRef.current.style.transform = showCTA ? "translateY(0)" : "translateY(18px)";
+        ctaRef.current.style.pointerEvents = showCTA ? "auto" : "none";
+      }
+
+      // 4. Direct Sub-progress lines
+      captions.forEach((_, i) => {
+        const capProgress = p * captions.length - i;
+        const subBar = subProgressRefs.current[i];
+        if (subBar) {
+          const visible = activeIdxRef.current === i;
+          subBar.style.width = visible ? `${Math.max(0, Math.min(capProgress, 1)) * 100}%` : "0%";
+        }
+      });
+
+      // 5. Update React State ONLY when index changes
+      const newIdx = Math.min(Math.floor(p * captions.length), captions.length - 1);
+      if (newIdx !== activeIdxRef.current) {
+        activeIdxRef.current = newIdx;
+        setActiveIdx(newIdx);
+      }
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setMounted(true);
-
+    
     const video = videoRef.current;
+    if (video) {
+      // Force pause to prevent background playback interference during scrub
+      video.pause();
+    }
+    
+    // Init scroll progress right away
+    onScroll();
 
-    // Call scrub once metadata is ready (duration available)
-    const onMeta = () => scrub();
-    if (video) video.addEventListener("loadedmetadata", onMeta);
-
-    const onScroll = () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      rafRef.current = requestAnimationFrame(scrub);
-    };
     window.addEventListener("scroll", onScroll, { passive: true });
-    scrub();
 
     return () => {
       window.removeEventListener("scroll", onScroll);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      if (video) video.removeEventListener("loadedmetadata", onMeta);
     };
-  }, [scrub]);
-
-  const p = mounted ? progress : 0;
+  }, [onScroll]);
 
   return (
     <div ref={containerRef} className="relative h-[300vh]">
       {/* Sticky viewport — fills 100dvh so mobile toolbars are accounted for */}
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-black">
         {/* ── Video ── */}
-        <video ref={videoRef} src="https://res.cloudinary.com/dc3lyg55d/video/upload/v1775326874/vd_scroll_finit2_zd2sib.mp4" muted playsInline preload="auto" /* keeps the first decoded frame visible */ onLoadedData={(e) => { (e.target as HTMLVideoElement).currentTime = 0.001; }} className="absolute inset-0 h-full w-full object-cover" />
+        <video 
+          ref={videoRef} 
+          src="https://res.cloudinary.com/dc3lyg55d/video/upload/v1775326874/vd_scroll_finit2_zd2sib.mp4" 
+          muted 
+          playsInline 
+          preload="auto" 
+          /* keeps the first decoded frame visible */ 
+          onLoadedData={(e) => { (e.target as HTMLVideoElement).currentTime = 0.001; }} 
+          className="absolute inset-0 h-full w-full object-cover" 
+        />
 
         {/* ── Overlay ── */}
         <div className="absolute inset-0 bg-black/50 pointer-events-none" />
@@ -98,9 +149,10 @@ function ScrollScrubVideo() {
         {/* ── Progress bar ── */}
         <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/10 z-20">
           <div
+            ref={mainProgressBarRef}
             suppressHydrationWarning
             className="h-full bg-gold"
-            style={{ width: `${p * 100}%` }}
+            style={{ width: "0%" }}
           />
         </div>
 
@@ -130,7 +182,6 @@ function ScrollScrubVideo() {
         {/* ── Caption cards ── */}
         <div className="absolute inset-0 flex items-end z-10 px-5 sm:px-12 lg:px-20 pb-20 sm:pb-28">
           {captions.map((cap, i) => {
-            const capProgress = p * captions.length - i;
             const visible = mounted ? activeIdx === i : i === 0;
             return (
               <div
@@ -158,13 +209,11 @@ function ScrollScrubVideo() {
                 {/* Sub-progress line */}
                 <div className="w-16 h-[1px] bg-white/20 overflow-hidden rounded-full">
                   <div
+                    ref={(el) => { subProgressRefs.current[i] = el; }}
                     suppressHydrationWarning
                     className="h-full bg-gold"
                     style={{
-                      width:
-                        mounted && visible
-                          ? `${Math.max(0, Math.min(capProgress, 1)) * 100}%`
-                          : "0%",
+                      width: "0%",
                       transition: "width 0.1s linear",
                     }}
                   />
@@ -176,13 +225,14 @@ function ScrollScrubVideo() {
 
         {/* ── CTA appears at end of scrub ── */}
         <div
+          ref={ctaRef}
           suppressHydrationWarning
           className="absolute inset-x-0 bottom-16 sm:bottom-24 flex justify-center z-10"
           style={{
-            opacity: mounted && p > 0.88 ? 1 : 0,
-            transform: mounted && p > 0.88 ? "translateY(0)" : "translateY(18px)",
+            opacity: 0,
+            transform: "translateY(18px)",
             transition: mounted ? "opacity 0.6s ease, transform 0.6s ease" : "none",
-            pointerEvents: mounted && p > 0.88 ? "auto" : "none",
+            pointerEvents: "none",
           }}
         >
           <Link
