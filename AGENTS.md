@@ -19,7 +19,7 @@ Créer une application e-commerce moderne, ultra responsive (mobile / tablette /
 * **Animations**: Framer Motion
 
 ---
-
+ 
 ## 🎨 Design System
 
 ### 🎨 Couleurs
