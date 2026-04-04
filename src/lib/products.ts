@@ -4,8 +4,18 @@ import { Product } from '@/components/ProductCard';
 // Import local data as fallback only (URLs already point to Supabase Storage)
 import { products as localProducts } from './data';
 
+// In-memory cache for the client session to avoid hitting Supabase on every navigation
+let productsCache: Product[] | null = null;
+let lastFetchTime = 0;
+const CACHE_TTL = 1000 * 60 * 5; // 5 minutes
+
 export async function fetchProducts(): Promise<Product[]> {
   try {
+    const now = Date.now();
+    if (productsCache && (now - lastFetchTime < CACHE_TTL)) {
+      return productsCache;
+    }
+
     const { data, error } = await supabase
       .from('products')
       .select('*')
@@ -21,7 +31,9 @@ export async function fetchProducts(): Promise<Product[]> {
       return localProducts;
     }
 
-    return data as Product[];
+    productsCache = data as Product[];
+    lastFetchTime = now;
+    return productsCache;
   } catch (err) {
     console.error('[fetchProducts] Unexpected error:', err);
     return localProducts;
@@ -30,6 +42,12 @@ export async function fetchProducts(): Promise<Product[]> {
 
 export async function fetchProductById(id: string): Promise<Product | undefined> {
   try {
+    // Si nous avons déjà le cache complet, chercher dedans
+    if (productsCache && (Date.now() - lastFetchTime < CACHE_TTL)) {
+      const cachedProduct = productsCache.find((p) => p.id === id);
+      if (cachedProduct) return cachedProduct;
+    }
+
     const { data, error } = await supabase
       .from('products')
       .select('*')

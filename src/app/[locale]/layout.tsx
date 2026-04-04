@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import FloatingActions from "@/components/FloatingActions";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -62,6 +63,7 @@ export default async function RootLayout({
             <main className="flex-1">{children}</main>
             <Footer />
             <FloatingActions />
+            <ServiceWorkerRegister />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

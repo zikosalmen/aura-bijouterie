@@ -87,7 +87,7 @@ function ScrollScrubVideo() {
       {/* Sticky viewport — fills 100dvh so mobile toolbars are accounted for */}
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-black">
         {/* ── Video ── */}
-        <video ref={videoRef} src="/vd_scroll_finit2.mp4" muted playsInline preload="auto" /* keeps the first decoded frame visible */ onLoadedData={(e) => { (e.target as HTMLVideoElement).currentTime = 0.001; }} className="absolute inset-0 h-full w-full object-cover" />
+        <video ref={videoRef} src="https://res.cloudinary.com/dc3lyg55d/video/upload/v1775326874/vd_scroll_finit2_zd2sib.mp4" muted playsInline preload="auto" /* keeps the first decoded frame visible */ onLoadedData={(e) => { (e.target as HTMLVideoElement).currentTime = 0.001; }} className="absolute inset-0 h-full w-full object-cover" />
 
         {/* ── Overlay ── */}
         <div className="absolute inset-0 bg-black/50 pointer-events-none" />
@@ -232,7 +232,7 @@ function HeroSection() {
         style={{ transform: `translateY(${videoTranslateY}%)` }}
       >
         <video
-          src="/v_fond_principale.mp4"
+          src="https://res.cloudinary.com/dc3lyg55d/video/upload/v1775326871/v_fond_principale_myjrd3.mp4"
           autoPlay
           muted
           loop
