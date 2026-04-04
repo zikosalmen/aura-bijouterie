@@ -39,6 +39,17 @@
       "exclusiveDesc": "Des créations uniques qui soulignent votre personnalité et votre élégance.",
       "guaranteeInfo": "Garantie à Vie",
       "guaranteeDesc": "Nous garantissons la qualité et la durabilité de tous nos bijoux sans limite de temps."
+    },
+    "scrub": {
+      "tag1": "Savoir-faire",
+      "title1": "L'art de la bijouterie",
+      "desc1": "Chaque pièce est façonnée à la main par nos artisans, avec une précision millimétrée.",
+      "tag2": "Matériaux nobles",
+      "title2": "Or, argent & pierres précieuses",
+      "desc2": "Nous sélectionnons les métaux et gemmes les plus purs pour une qualité irréprochable.",
+      "tag3": "Finition parfaite",
+      "title3": "Détails qui font la différence",
+      "desc3": "La dernière touche transforme un bijou en une œuvre d'art que vous porterez toute une vie."
     }
   },
   "Account": {
