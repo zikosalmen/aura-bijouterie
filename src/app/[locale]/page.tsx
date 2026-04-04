@@ -87,18 +87,7 @@ function ScrollScrubVideo() {
       {/* Sticky viewport — fills 100dvh so mobile toolbars are accounted for */}
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-black">
         {/* ── Video ── */}
-        <video
-          ref={videoRef}
-          src="/v_scroll.mp4"
-          muted
-          playsInline
-          preload="auto"
-          /* keeps the first decoded frame visible */
-          onLoadedData={(e) => {
-            (e.target as HTMLVideoElement).currentTime = 0.001;
-          }}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+       <video ref={videoRef} src="/vd_scroll2.mp4" muted playsInline preload="auto" /* keeps the first decoded frame visible */ onLoadedData={(e) => { (e.target as HTMLVideoElement).currentTime = 0.001; }} className="absolute inset-0 h-full w-full object-cover" />
 
         {/* ── Overlay ── */}
         <div className="absolute inset-0 bg-black/50 pointer-events-none" />
@@ -139,7 +128,7 @@ function ScrollScrubVideo() {
         </div>
 
         {/* ── Caption cards ── */}
-        <div className="absolute inset-0 flex items-end z-10 px-6 sm:px-12 lg:px-20 pb-16 sm:pb-24">
+        <div className="absolute inset-0 flex items-end z-10 px-5 sm:px-12 lg:px-20 pb-20 sm:pb-28">
           {captions.map((cap, i) => {
             const capProgress = p * captions.length - i;
             const visible = mounted ? activeIdx === i : i === 0;
@@ -147,7 +136,7 @@ function ScrollScrubVideo() {
               <div
                 key={i}
                 suppressHydrationWarning
-                className="absolute max-w-xs sm:max-w-md"
+                className="absolute max-w-[260px] sm:max-w-md"
                 style={{
                   opacity: visible ? 1 : 0,
                   transform: visible ? "translateY(0px)" : "translateY(28px)",
@@ -157,13 +146,13 @@ function ScrollScrubVideo() {
                   pointerEvents: visible ? "auto" : "none",
                 }}
               >
-                <span className="inline-block text-gold text-[10px] sm:text-xs font-bold tracking-[0.25em] uppercase border border-gold/40 px-3 py-1 rounded-full bg-black/50 backdrop-blur-sm mb-4">
+                <span className="inline-block text-gold text-[9px] sm:text-xs font-bold tracking-[0.2em] uppercase border border-gold/40 px-2.5 py-0.5 rounded-full bg-black/50 backdrop-blur-sm mb-3">
                   {cap.tag}
                 </span>
-                <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-3 sm:mb-4">
+                <h2 className="font-serif text-xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-2 sm:mb-4">
                   {cap.title}
                 </h2>
-                <p className="text-white/70 text-sm sm:text-base leading-relaxed max-w-sm mb-5">
+                <p className="text-white/70 text-xs sm:text-base leading-relaxed max-w-[220px] sm:max-w-sm mb-3 sm:mb-5">
                   {cap.desc}
                 </p>
                 {/* Sub-progress line */}
@@ -235,7 +224,7 @@ function HeroSection() {
   const videoTranslateY = heroMounted ? scrolled * 30 : 0;
 
   return (
-    <section className="relative h-screen min-h-[500px] flex items-center justify-center overflow-hidden bg-black">
+    <section className="relative h-[100dvh] min-h-[560px] flex items-center justify-center overflow-hidden bg-black">
       {/* ── Video Layer ── */}
       <div
         suppressHydrationWarning
@@ -273,7 +262,7 @@ function HeroSection() {
       {/* ── Content ── */}
       <div
         suppressHydrationWarning
-        className="relative z-10 text-center px-4 max-w-4xl mx-auto"
+        className="relative z-10 text-center px-5 sm:px-8 max-w-4xl mx-auto w-full"
         style={{
           opacity: contentOpacity,
           transform: `translateY(-${contentTranslateY}px)`,
@@ -283,7 +272,7 @@ function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="inline-block text-gold font-semibold text-xs sm:text-sm tracking-[0.25em] uppercase border border-gold/40 px-4 sm:px-6 py-1.5 rounded-full bg-black/30 backdrop-blur-sm mb-6 sm:mb-8"
+          className="inline-block text-gold font-semibold text-[10px] sm:text-sm tracking-[0.2em] uppercase border border-gold/40 px-3 sm:px-6 py-1 sm:py-1.5 rounded-full bg-black/30 backdrop-blur-sm mb-4 sm:mb-8"
         >
           Aura Design
         </motion.span>
@@ -292,7 +281,7 @@ function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.35 }}
-          className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.05] tracking-tight mb-5 sm:mb-7"
+          className="font-serif text-[2rem] xs:text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.1] tracking-tight mb-4 sm:mb-7"
         >
           {t("heroTitle")}
         </motion.h1>
@@ -301,7 +290,7 @@ function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.5 }}
-          className="text-white/75 text-base sm:text-lg lg:text-xl leading-relaxed max-w-lg sm:max-w-xl mx-auto mb-8 sm:mb-10"
+          className="text-white/75 text-sm sm:text-lg lg:text-xl leading-relaxed max-w-[280px] sm:max-w-xl mx-auto mb-6 sm:mb-10"
         >
           {t("heroDesc")}
         </motion.p>
@@ -310,18 +299,18 @@ function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.65 }}
-          className="flex flex-wrap items-center justify-center gap-3 sm:gap-4"
+          className="flex flex-col xs:flex-row items-center justify-center gap-3 sm:gap-4"
         >
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 bg-gold hover:bg-gold/90 text-white font-bold text-sm sm:text-base px-7 sm:px-9 py-3.5 sm:py-4 rounded-2xl shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:shadow-[0_0_45px_rgba(212,175,55,0.55)] hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-flex items-center gap-2 bg-gold hover:bg-gold/90 text-white font-bold text-sm sm:text-base px-6 sm:px-9 py-3 sm:py-4 rounded-2xl shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:shadow-[0_0_45px_rgba(212,175,55,0.55)] hover:-translate-y-0.5 transition-all duration-300 w-full xs:w-auto justify-center"
           >
             {t("heroBtn")}
             <ArrowRight size={18} className="rtl:rotate-180" />
           </Link>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 border border-white/30 text-white hover:bg-white/10 backdrop-blur-sm font-semibold text-sm sm:text-base px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl transition-all duration-300"
+            className="inline-flex items-center gap-2 border border-white/30 text-white hover:bg-white/10 backdrop-blur-sm font-semibold text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 rounded-2xl transition-all duration-300 w-full xs:w-auto justify-center"
           >
             Contact
           </Link>

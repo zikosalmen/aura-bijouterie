@@ -151,7 +151,7 @@ export default function ProductCard({
         {/* Total Price + Cart controls */}
         <div className="mt-auto pt-1">
           <div className="flex items-center justify-between mb-2.5">
-            <span className="text-[10px] text-foreground/45">Prix Total</span>
+            <span className="text-[10px] text-foreground/45">Prix <br/>Total</span>
             <span className="font-bold text-base sm:text-lg text-gold">{formatPrice(totalPrice, locale)}</span>
           </div>
 
@@ -161,7 +161,7 @@ export default function ProductCard({
             <div className="flex items-center bg-foreground/5 rounded-xl border border-border/40 shrink-0">
               <button
                 onClick={(e) => { e.preventDefault(); setQuantity(Math.max(1, quantity - 1)); }}
-                className="w-8 h-8 flex items-center justify-center rounded-l-xl hover:bg-foreground/10 transition-colors text-foreground/70"
+                className="w-6 h-8 flex items-center justify-center rounded-l-xl hover:bg-foreground/10 transition-colors text-foreground/70"
               >
                 <Minus size={14} />
               </button>
@@ -173,7 +173,7 @@ export default function ProductCard({
                   const val = parseInt(e.target.value);
                   if (!isNaN(val) && val > 0) setQuantity(val);
                 }}
-                className="w-10 sm:w-12 bg-transparent text-center font-bold text-sm sm:text-base outline-none focus:ring-2 focus:ring-gold/30 rounded"
+                className="w-4 sm:w-12 bg-transparent text-center font-bold text-sm sm:text-base outline-none focus:ring-2 focus:ring-gold/30 rounded"
               />
               <button
                 onClick={(e) => { e.preventDefault(); setQuantity(quantity + 1); }}

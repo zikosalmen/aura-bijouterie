@@ -14,6 +14,8 @@
   --font-sans: var(--font-inter);
   --font-serif: var(--font-playfair);
   --radius-2xl: 1rem;
+  /* Custom xs breakpoint — between bare mobile and sm (640px) */
+  --breakpoint-xs: 475px;
 }
 
 .dark {
@@ -28,7 +30,12 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-playfair), serif;
 }
 
@@ -36,8 +43,11 @@ h1, h2, h3, h4, h5, h6 {
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
+
 input[type="number"] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
