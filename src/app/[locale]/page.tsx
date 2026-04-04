@@ -226,8 +226,8 @@ function HeroSection() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Overlay: 0.35 at top → 0.8 as we scroll away
-  const overlayOpacity = heroMounted ? 0.35 + scrolled * 0.45 : 0.35;
+  // Overlay: 0.15 at top → 0.8 as we scroll away
+  const overlayOpacity = heroMounted ? 0.15 + scrolled * 0.65 : 0.15;
   // Content: fade + move up as hero scrolls away
   const contentOpacity = heroMounted ? Math.max(0, 1 - scrolled * 2.5) : 1;
   const contentTranslateY = heroMounted ? scrolled * 60 : 0;
@@ -239,8 +239,8 @@ function HeroSection() {
       {/* ── Video Layer ── */}
       <div
         suppressHydrationWarning
-        className="absolute inset-0 w-full h-full scale-[1.1]"
-        style={{ transform: `scale(1.1) translateY(${videoTranslateY}%)` }}
+        className="absolute inset-0 w-full h-full"
+        style={{ transform: `translateY(${videoTranslateY}%)` }}
       >
         <video
           src="/vd_fond_principale.mp4"
