@@ -89,7 +89,7 @@ function ScrollScrubVideo() {
         {/* ── Video ── */}
         <video
           ref={videoRef}
-          src="/bbb99.mp4"
+          src="/v_scroll.mp4"
           muted
           playsInline
           preload="auto"
@@ -243,13 +243,13 @@ function HeroSection() {
         style={{ transform: `translateY(${videoTranslateY}%)` }}
       >
         <video
-          src="/vd_fond_principale.mp4"
+          src="/v_fond_principale.mp4"
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover lg:scale-[1.5]"
         />
       </div>
 
