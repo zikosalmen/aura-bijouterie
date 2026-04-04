@@ -18,11 +18,11 @@ function ScrollScrubVideo() {
   const mainProgressBarRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const subProgressRefs = useRef<(HTMLDivElement | null)[]>([]);
-  
+
   const rafRef = useRef<number | null>(null);
   const targetP = useRef(0);
   const currentP = useRef(0);
-  
+
   const [mounted, setMounted] = useState(false);
   const [activeIdx, setActiveIdx] = useState(0);
   const activeIdxRef = useRef(0);
@@ -106,13 +106,13 @@ function ScrollScrubVideo() {
 
   useEffect(() => {
     setMounted(true);
-    
+
     const video = videoRef.current;
     if (video) {
       // Force pause to prevent background playback interference during scrub
       video.pause();
     }
-    
+
     // Init scroll progress right away
     onScroll();
 
@@ -129,15 +129,15 @@ function ScrollScrubVideo() {
       {/* Sticky viewport — fills 100dvh so mobile toolbars are accounted for */}
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-black">
         {/* ── Video ── */}
-        <video 
-          ref={videoRef} 
-          src="https://res.cloudinary.com/dc3lyg55d/video/upload/v1775326874/vd_scroll_finit2_zd2sib.mp4" 
-          muted 
-          playsInline 
-          preload="auto" 
-          /* keeps the first decoded frame visible */ 
-          onLoadedData={(e) => { (e.target as HTMLVideoElement).currentTime = 0.001; }} 
-          className="absolute inset-0 h-full w-full object-cover" 
+        <video
+          ref={videoRef}
+          src="https://res.cloudinary.com/dc3lyg55d/video/upload/v1775326874/vd_scroll_finit2_zd2sib.mp4"
+          muted
+          playsInline
+          preload="auto"
+          /* keeps the first decoded frame visible */
+          onLoadedData={(e) => { (e.target as HTMLVideoElement).currentTime = 0.001; }}
+          className="absolute inset-0 h-full w-full object-cover"
         />
 
         {/* ── Overlay ── */}
@@ -305,10 +305,7 @@ function HeroSection() {
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background/30 to-transparent" />
       </div>
 
-      {/* ── Gold accent lines ── */}
-      <div className="absolute top-1/4 left-6 sm:left-12 w-[1px] h-16 sm:h-24 bg-gradient-to-b from-transparent via-gold/50 to-transparent pointer-events-none" />
-      <div className="absolute top-1/4 right-6 sm:right-12 w-[1px] h-16 sm:h-24 bg-gradient-to-b from-transparent via-gold/50 to-transparent pointer-events-none" />
-
+     
       {/* ── Content ── */}
       <div
         suppressHydrationWarning
