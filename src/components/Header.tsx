@@ -106,14 +106,38 @@ export default function Header() {
             <ThemeToggle />
 
             {/* Cart — visible on all screens */}
-            <Link href="/cart" className="relative p-1.5 hover:text-gold transition-colors group">
-              <ShoppingBag size={21} className="group-hover:scale-105 transition-transform" />
-              {mounted && totalItems > 0 && (
-                <span className="absolute -top-0.5 -right-1 bg-gold text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-sm">
-                  {totalItems > 9 ? "9+" : totalItems}
-                </span>
-              )}
-            </Link>
+            <div className="flex items-center">
+              {/* Confirm Order Button (Appears next to the cart) */}
+              <AnimatePresence>
+                {mounted && totalItems > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 20, scale: 0.8 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: 20, scale: 0.8 }}
+                    transition={{ duration: 0.2 }}
+                    className="mr-2 sm:mr-3 rtl:mr-0 rtl:ml-2 rtl:sm:ml-3"
+                  >
+                    <Link
+  href="/cart"
+  className="
+    flex items-center gap-1
+    bg-green-500 hover:bg-green-600 text-white font-bold
+    text-[9px] sm:text-sm
+    px-2 sm:px-4
+    py-1 sm:py-2
+    rounded-lg sm:rounded-xl
+    shadow-sm transition-all hover:-translate-y-0.5
+    whitespace-nowrap
+  "
+>
+  <span>{locale === "fr" ? "Commander" : "تأكيد الطلب"}</span>
+  <ShoppingCart size={10} className="opacity-90 hidden sm:block" />
+</Link>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              
+            </div>
 
             {/* Mobile Menu Toggle */}
             <button

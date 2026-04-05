@@ -90,6 +90,7 @@ export default function ProductCard({
                   fill
                   // Only prioritize (eager load) the first image of the first 4 cards
                   priority={priority && idx === 0}
+                  unoptimized={priority && idx === 0}
                   loading={priority && idx === 0 ? "eager" : "lazy"}
                   quality={75}
                   // Precise sizes matching our 2-col / 3-col / 4-col grid

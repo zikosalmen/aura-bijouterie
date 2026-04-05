@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import Filters from "@/components/Filters";
 import ProductCard, { Product } from "@/components/ProductCard";
 import { fetchProducts } from "@/lib/products";
+import { products as localProducts } from "@/lib/data";
 
 function ProductSkeleton() {
   return (
@@ -26,8 +27,8 @@ function ProductSkeleton() {
 
 export default function ProductsPage() {
   const t = useTranslations('Products');
-  const [initialProducts, setInitialProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [initialProducts, setInitialProducts] = useState<Product[]>(localProducts);
+  const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
     category: "all",
     subCategory: "all"
@@ -37,7 +38,6 @@ export default function ProductsPage() {
     async function load() {
       const data = await fetchProducts();
       setInitialProducts(data);
-      setLoading(false);
     }
     load();
   }, []);
@@ -72,16 +72,13 @@ export default function ProductsPage() {
           {Array.from({ length: 8 }).map((_, i) => <ProductSkeleton key={i} />)}
         </div>
       ) : filteredProducts.length > 0 ? (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6"
+        <div
+          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500"
         >
           {filteredProducts.map((product, idx) => (
-            <ProductCard key={product.id} product={product} priority={idx < 4} />
+            <ProductCard key={product.reference} product={product} priority={idx < 4} />
           ))}
-        </motion.div>
+        </div>
       ) : (
         <div className="py-20 text-center text-foreground/50">
           <p className="text-xl">{t('noItems')}</p>

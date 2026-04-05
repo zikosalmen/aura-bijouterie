@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Gem, Award, Shield, ChevronDown } from "lucide-react";
 import { useState, useEffect, useRef, useCallback, startTransition } from "react";
 import { fetchProducts } from "@/lib/products";
+import { products as localProducts } from "@/lib/data";
 import ProductCard, { Product } from "@/components/ProductCard";
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -422,7 +423,11 @@ function HeroSection() {
 ═══════════════════════════════════════════════════════════════════════ */
 export default function HomePage() {
   const t = useTranslations("Home");
-  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>(() => 
+    [...localProducts]
+      .sort((a, b) => new Date(b.dateAdded || 0).getTime() - new Date(a.dateAdded || 0).getTime())
+      .slice(0, 4)
+  );
 
   useEffect(() => {
     async function load() {
@@ -452,15 +457,13 @@ export default function HomePage() {
 
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {featuredProducts.map((product, idx) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
+              <div
+                key={product.reference}
+                className="animate-in fade-in slide-in-from-bottom-4 duration-700 fill-mode-both"
+                style={{ animationDelay: `${idx * 100}ms` }}
               >
                 <ProductCard product={product} priority={true} />
-              </motion.div>
+              </div>
             ))}
           </div>
 
