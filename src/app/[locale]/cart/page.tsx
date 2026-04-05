@@ -121,14 +121,8 @@ export default function CartPage() {
               <h2 className="font-serif text-2xl font-bold mb-6">{t('summary')}</h2>
               
               <div className="space-y-4 mb-8">
-                <div className="flex justify-between text-foreground/70">
-                  <span>{t('subtotal')}</span>
-                  <span>{formatPrice(total, locale)}</span>
-                </div>
-                <div className="flex justify-between text-foreground/70">
-                  <span>{t('shipping')}</span>
-                  <span>{t('shippingInfo')}</span>
-                </div>
+               
+              
                 <div className="h-px bg-gold/20 w-full my-4"></div>
                 <div className="flex justify-between items-end">
                   <span className="font-bold text-lg">{t('total')}</span>
@@ -140,9 +134,7 @@ export default function CartPage() {
                 {t('checkout')} <ArrowRight size={20} className="rtl:rotate-180" />
               </button>
 
-              <div className="mt-6 text-center text-xs text-foreground/50">
-                {t('securityInfo')}
-              </div>
+              
             </div>
           </div>
         </div>

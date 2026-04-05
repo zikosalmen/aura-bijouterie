@@ -104,7 +104,7 @@
     "shipping": "Frais de livraison",
     "shippingInfo": "Calculé à l'étape suivante",
     "total": "Total",
-    "checkout": "Procéder au paiement",
+    "checkout": "Envoyer la demande par email",
     "securityInfo": "Paiement 100% sécurisé. Retours sous 30 jours."
   },
   "Orders": {
