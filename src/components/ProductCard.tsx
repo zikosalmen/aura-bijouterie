@@ -73,7 +73,7 @@ export default function ProductCard({
       <Link href={`/products/${product.id}`} className="block">
         <div className="relative aspect-square overflow-hidden bg-foreground/5 w-full">
           <div
-            className="flex w-full h-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] touch-pan-x"
+            className="flex w-full h-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
             onScroll={(e) => {
               const el = e.currentTarget;
               const idx = Math.round(el.scrollLeft / el.clientWidth);
@@ -108,9 +108,8 @@ export default function ProductCard({
               {product.images.map((_, idx) => (
                 <div
                   key={idx}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    currentImageIdx === idx ? "w-4 bg-gold" : "w-1.5 bg-white/60"
-                  }`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${currentImageIdx === idx ? "w-4 bg-gold" : "w-1.5 bg-white/60"
+                    }`}
                 />
               ))}
             </div>
@@ -151,7 +150,7 @@ export default function ProductCard({
         {/* Total Price + Cart controls */}
         <div className="mt-auto pt-1">
           <div className="flex items-center justify-between mb-2.5">
-            <span className="text-[10px] text-foreground/45">Prix <br/>Total</span>
+            <span className="text-[10px] text-foreground/45">Prix <br />Total</span>
             <span className="font-bold text-base sm:text-lg text-gold">{formatPrice(totalPrice, locale)}</span>
           </div>
 
@@ -186,11 +185,10 @@ export default function ProductCard({
             {/* Add to cart button */}
             <button
               onClick={handleAddToCart}
-              className={`flex-1 h-9 rounded-xl flex items-center justify-center gap-1.5 font-semibold text-xs transition-all duration-300 shadow-sm ${
-                added
+              className={`flex-1 h-9 rounded-xl flex items-center justify-center gap-1.5 font-semibold text-xs transition-all duration-300 shadow-sm ${added
                   ? "bg-green-500 text-white scale-95"
                   : "bg-gold hover:bg-gold/90 text-white hover:-translate-y-0.5 hover:shadow-md"
-              }`}
+                }`}
             >
               <ShoppingCart size={14} />
               <span className="hidden sm:inline">{added ? "Ajouté !" : "Ajouter"}</span>
