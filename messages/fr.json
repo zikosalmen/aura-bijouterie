@@ -105,7 +105,23 @@
     "shippingInfo": "Calculé à l'étape suivante",
     "total": "Total",
     "checkout": "Envoyer la demande par email",
-    "securityInfo": "Paiement 100% sécurisé. Retours sous 30 jours."
+    "securityInfo": "Commande transmise par email. Notre équipe vous contactera.",
+    "modalTitle": "Finaliser la demande",
+    "prenomLabel": "Prénom",
+    "nomLabel": "Nom",
+    "phoneLabel": "Téléphone",
+    "returningUser": "Bonjour {name} — vos informations ont été pré-remplies.",
+    "orderSummaryLabel": "Récapitulatif",
+    "itemsLabel": "article(s)",
+    "sending": "Envoi en cours…",
+    "successTitle": "Demande envoyée !",
+    "successDesc": "Votre commande a bien été transmise. Notre équipe vous contactera sous peu.",
+    "successBanner": "✅ Votre demande a été envoyée avec succès ! Nous vous contacterons très bientôt.",
+    "validation": {
+      "prenomRequired": "Le prénom est obligatoire (min. 2 caractères).",
+      "nomRequired": "Le nom est obligatoire (min. 2 caractères).",
+      "phoneInvalid": "Numéro de téléphone invalide."
+    }
   },
   "Orders": {
     "title": "Historique des Commandes",
@@ -166,6 +182,17 @@
     "phoneLabel": "Téléphone",
     "messageLabel": "Message",
     "messagePlaceholder": "Comment pouvons-nous vous aider ?",
-    "sendBtn": "Envoyer le message"
+    "sendBtn": "Envoyer le message",
+    "sending": "Envoi en cours…",
+    "successTitle": "Message envoyé !",
+    "successDesc": "Merci pour votre message. Notre équipe vous répondra dans les plus brefs délais.",
+    "sendAnother": "Envoyer un autre message",
+    "autoFillNotice": "Bonjour {name} — vos coordonnées ont été pré-remplies depuis votre dernière commande.",
+    "validation": {
+      "nameRequired": "Le nom est obligatoire (min. 2 caractères).",
+      "emailInvalid": "Adresse email invalide.",
+      "phoneInvalid": "Numéro de téléphone invalide.",
+      "messageRequired": "Le message est obligatoire (min. 5 caractères)."
+    }
   }
 }
