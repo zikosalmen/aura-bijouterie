@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import { transporter, FROM_EMAIL, TO_EMAIL } from '@/lib/mailer';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// ─── Rate limiter (shared pattern with order route) ──────────────────────────
+// ─── Rate limiter ─────────────────────────────────────────────────────────────
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT_MAX = 3;
 const RATE_LIMIT_WINDOW = parseInt(process.env.RATE_LIMIT_WINDOW || '60') * 1000;
@@ -20,7 +18,7 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
-// ─── Input sanitizer ────────────────────────────────────────────────────────
+// ─── Sanitizer ───────────────────────────────────────────────────────────────
 function sanitize(value: unknown): string {
   if (typeof value !== 'string') return '';
   return value
@@ -29,13 +27,13 @@ function sanitize(value: unknown): string {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#x27;')
     .replace(/\//g, '&#x2F;')
-    .replace(/[\r\n]/g, ' ') // Allow newlines in message (as space, not injection)
+    .replace(/[\r\n]/g, ' ')  // allow newlines in message as space
     .trim()
     .slice(0, 1000);
 }
 
-function sanitizeName(value: unknown): string {
-  return sanitize(value).slice(0, 100).replace(/[\r\n]/g, '');
+function sanitizeLine(value: unknown): string {
+  return sanitize(value).replace(/[\r\n]/g, '').slice(0, 100);
 }
 
 function isValidEmail(email: string): boolean {
@@ -43,10 +41,11 @@ function isValidEmail(email: string): boolean {
 }
 
 function isValidPhone(phone: string): boolean {
-  if (!phone) return true; // Optional in contact form
+  if (!phone) return true; // optional
   return /^\+?[0-9\s\-()]{7,20}$/.test(phone);
 }
 
+// ─── HTML email template ──────────────────────────────────────────────────────
 function buildContactEmail(
   nom: string,
   email: string,
@@ -99,15 +98,14 @@ function buildContactEmail(
 </html>`;
 }
 
+// ─── POST Handler ─────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
-  // Rate limit
   const ip =
     req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
     req.headers.get('x-real-ip') ||
     'unknown';
-  if (!checkRateLimit(ip)) {
+  if (!checkRateLimit(ip))
     return NextResponse.json({ error: 'Trop de requêtes. Veuillez patienter.' }, { status: 429 });
-  }
 
   let body: Record<string, unknown>;
   try {
@@ -116,45 +114,34 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Corps de requête invalide.' }, { status: 400 });
   }
 
-  const nom = sanitizeName(body.nom);
-  const email = sanitize(body.email).replace(/[\r\n]/g, '');
-  const phone = sanitizeName(body.phone);
+  const nom     = sanitizeLine(body.nom);
+  const email   = sanitizeLine(body.email);
+  const phone   = sanitizeLine(body.phone);
   const message = sanitize(body.message);
-  const locale = sanitize(body.locale) || 'fr';
+  const locale  = sanitizeLine(body.locale) || 'fr';
 
-  if (!nom || nom.length < 2) {
+  if (!nom || nom.length < 2)
     return NextResponse.json({ error: 'Nom invalide.' }, { status: 422 });
-  }
-  if (!email || !isValidEmail(email)) {
+  if (!email || !isValidEmail(email))
     return NextResponse.json({ error: 'Email invalide.' }, { status: 422 });
-  }
-  if (phone && !isValidPhone(phone)) {
+  if (phone && !isValidPhone(phone))
     return NextResponse.json({ error: 'Numéro de téléphone invalide.' }, { status: 422 });
-  }
-  if (!message || message.length < 5) {
+  if (!message || message.length < 5)
     return NextResponse.json({ error: 'Message trop court.' }, { status: 422 });
-  }
 
-  const toEmail = process.env.ORDER_TO_EMAIL || 'salmenzekri680@gmail.com';
-  const fromEmail = process.env.ORDER_FROM_EMAIL || 'onboarding@resend.dev';
   const isFr = locale !== 'ar';
 
   try {
-    const { error: emailError } = await resend.emails.send({
-      from: `Mezen Bijouterie <${fromEmail}>`,
-      to: [toEmail],
+    await transporter.sendMail({
+      from: `"Mezen Bijouterie" <${FROM_EMAIL}>`,
+      to: TO_EMAIL,
       replyTo: email,
       subject: isFr ? `✉️ Message de ${nom}` : `✉️ رسالة من ${nom}`,
       html: buildContactEmail(nom, email, phone, message, locale),
     });
-
-    if (emailError) {
-      console.error('[Contact API] Resend error:', emailError);
-      return NextResponse.json({ error: 'Erreur lors de l\'envoi.' }, { status: 500 });
-    }
   } catch (err) {
-    console.error('[Contact API] Exception:', err);
-    return NextResponse.json({ error: 'Erreur serveur.' }, { status: 500 });
+    console.error('[Contact API] SMTP error:', err);
+    return NextResponse.json({ error: 'Erreur lors de l\'envoi.' }, { status: 500 });
   }
 
   return NextResponse.json({ success: true, message: 'Message envoyé avec succès !' });
