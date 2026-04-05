@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight, Gem, Award, Shield, ChevronDown } from "lucide-react";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, startTransition } from "react";
 import { fetchProducts } from "@/lib/products";
 import ProductCard, { Product } from "@/components/ProductCard";
 
@@ -20,8 +20,8 @@ function ScrollScrubVideo() {
   const subProgressRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const rafRef = useRef<number | null>(null);
-  const targetP = useRef(0);
-  const currentP = useRef(0);
+  // Cached layout metrics — read once on mount/resize, never inside RAF
+  const scrollableRef = useRef(0);
 
   const [mounted, setMounted] = useState(false);
   const [activeIdx, setActiveIdx] = useState(0);
@@ -45,7 +45,7 @@ function ScrollScrubVideo() {
     },
   ];
 
-  // Synchronized scroll updates
+  // Synchronized scroll updates — all layout READS use cached values, no reads inside RAF
   const onScroll = useCallback(() => {
     // Only schedule one animation frame per paint cycle (prevents stutter & lag)
     if (rafRef.current) return;
@@ -57,24 +57,25 @@ function ScrollScrubVideo() {
       const video = videoRef.current;
       if (!el || !video || !video.duration) return;
 
-      const rect = el.getBoundingClientRect();
-      const scrollable = el.offsetHeight - window.innerHeight;
+      const scrollable = scrollableRef.current;
       if (scrollable <= 0) return;
 
+      // Single cheap read — getBoundingClientRect is the bare minimum needed here
+      const top = el.getBoundingClientRect().top;
+
       // Calculate pure un-delayed progress
-      const p = Math.min(1, Math.max(0, -rect.top / scrollable));
+      const p = Math.min(1, Math.max(0, -top / scrollable));
 
       // 1. Precise Video Scrubbing
+      // Threshold = 1 frame at 30fps (~0.033s) — avoids redundant H.264 decode passes
       const targetTime = p * video.duration;
-      // The condition avoids redundant assignments which can cause H.264 decoding stutters
-      if (Math.abs(video.currentTime - targetTime) > 0.01) {
-        // Fast seek is preferred on Safari but standard currentTime handles all browsers
+      if (Math.abs(video.currentTime - targetTime) > 0.033) {
         video.currentTime = targetTime;
       }
 
-      // 2. Direct Progress Bar
+      // 2. Progress bar — scaleX is compositor-only (no layout, no paint)
       if (mainProgressBarRef.current) {
-        mainProgressBarRef.current.style.width = `${p * 100}%`;
+        mainProgressBarRef.current.style.transform = `scaleX(${p})`;
       }
 
       // 3. Direct CTA display
@@ -85,24 +86,48 @@ function ScrollScrubVideo() {
         ctaRef.current.style.pointerEvents = showCTA ? "auto" : "none";
       }
 
-      // 4. Direct Sub-progress lines
+      // 4. Sub-progress lines — scaleX compositor path
       captions.forEach((_, i) => {
         const capProgress = p * captions.length - i;
         const subBar = subProgressRefs.current[i];
         if (subBar) {
           const visible = activeIdxRef.current === i;
-          subBar.style.width = visible ? `${Math.max(0, Math.min(capProgress, 1)) * 100}%` : "0%";
+          subBar.style.transform = visible
+            ? `scaleX(${Math.max(0, Math.min(capProgress, 1))})`
+            : "scaleX(0)";
         }
       });
 
-      // 5. Update React State ONLY when index changes
+      // 5. Update React State ONLY when index changes — low-priority via startTransition
       const newIdx = Math.min(Math.floor(p * captions.length), captions.length - 1);
       if (newIdx !== activeIdxRef.current) {
         activeIdxRef.current = newIdx;
-        setActiveIdx(newIdx);
+        startTransition(() => setActiveIdx(newIdx));
       }
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Cache offsetHeight + innerHeight once on mount and on every resize
+  // This is the key fix: reading el.offsetHeight OUTSIDE the scroll/RAF callback
+  // prevents layout thrashing (read → write → forced reflow cycle each frame)
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const updateScrollable = () => {
+      scrollableRef.current = el.offsetHeight - window.innerHeight;
+    };
+    updateScrollable();
+
+    const ro = new ResizeObserver(updateScrollable);
+    ro.observe(el);
+    window.addEventListener("resize", updateScrollable, { passive: true });
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", updateScrollable);
+    };
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -146,13 +171,13 @@ function ScrollScrubVideo() {
         {/* ── Bottom vignette ── */}
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent pointer-events-none" />
 
-        {/* ── Progress bar ── */}
+        {/* ── Progress bar — transform-origin left so scaleX(0→1) grows left→right ── */}
         <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/10 z-20">
           <div
             ref={mainProgressBarRef}
             suppressHydrationWarning
             className="h-full bg-gold"
-            style={{ width: "0%" }}
+            style={{ transform: "scaleX(0)", transformOrigin: "left" }}
           />
         </div>
 
@@ -206,15 +231,16 @@ function ScrollScrubVideo() {
                 <p className="text-white/70 text-xs sm:text-base leading-relaxed max-w-[220px] sm:max-w-sm mb-3 sm:mb-5">
                   {cap.desc}
                 </p>
-                {/* Sub-progress line */}
+                {/* Sub-progress line — scaleX compositor path */}
                 <div className="w-16 h-[1px] bg-white/20 overflow-hidden rounded-full">
                   <div
                     ref={(el) => { subProgressRefs.current[i] = el; }}
                     suppressHydrationWarning
                     className="h-full bg-gold"
                     style={{
-                      width: "0%",
-                      transition: "width 0.1s linear",
+                      transform: "scaleX(0)",
+                      transformOrigin: "left",
+                      transition: "transform 0.1s linear",
                     }}
                   />
                 </div>
@@ -257,12 +283,18 @@ function HeroSection() {
 
   useEffect(() => {
     setHeroMounted(true);
+    // Cache innerHeight — reading it inside the scroll callback forces reflow
+    let cachedH = window.innerHeight;
+    const onResize = () => { cachedH = window.innerHeight; };
     const handleScroll = () => {
-      const windowH = window.innerHeight;
-      setScrolled(Math.min(1, window.scrollY / windowH));
+      setScrolled(Math.min(1, window.scrollY / cachedH));
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
   // Overlay: 0.15 at top → 0.8 as we scroll away
