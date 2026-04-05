@@ -126,7 +126,24 @@
   "Orders": {
     "title": "Historique des Commandes",
     "noOrders": "Aucune commande",
-    "noOrdersDesc": "Vous n'avez pas encore passé de commande. Explorez notre catalogue pour découvrir des joyaux exceptionnels."
+    "noOrdersDesc": "Vous n'avez pas encore passé de commande. Explorez notre catalogue pour découvrir des joyaux exceptionnels.",
+    "ordersCount": "commande(s) dans votre historique",
+    "exploreBtn": "Explorer la collection",
+    "cacheNotice": "Historique sauvegardé sur cet appareil",
+    "status": {
+      "pending": "En attente",
+      "confirmed": "Confirmée",
+      "cancelled": "Annulée"
+    },
+    "detail": {
+      "client": "Client",
+      "phone": "Téléphone",
+      "ref": "Référence",
+      "weight": "Grammage",
+      "qty": "Qté",
+      "total": "Total",
+      "grandTotal": "Total général"
+    }
   },
   "Data": {
     "K1": { "desc": "Un collier magnifique pour marquer vos moments les plus précieux." },

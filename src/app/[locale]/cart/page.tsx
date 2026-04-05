@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCartStore } from "@/store/cartStore";
 import { useUserStore } from "@/store/userStore";
+import { useOrderStore } from "@/store/orderStore";
 import { formatPrice } from "@/lib/utils";
 import {
   Trash2,
@@ -37,6 +38,7 @@ function CheckoutModal({ onClose, onSuccess, total }: CheckoutModalProps) {
   const { user, setUser } = useUserStore();
   const { items, clearCart } = useCartStore();
   const { browserUuid } = useUserStore();
+  const { addOrder } = useOrderStore();
 
   const [prenom, setPrenom] = useState(user?.prenom || "");
   const [nom, setNom] = useState(user?.nom || "");
@@ -96,6 +98,24 @@ function CheckoutModal({ onClose, onSuccess, total }: CheckoutModalProps) {
 
         // Persist user info
         setUser({ prenom: prenom.trim(), nom: nom.trim(), phone: phone.trim() });
+
+        // ✅ Sauvegarder la commande en localStorage (cache browser)
+        addOrder({
+          prenom: prenom.trim(),
+          nom: nom.trim(),
+          phone: phone.trim(),
+          locale,
+          dbId: data.orderId ?? undefined,
+          items: items.map((item) => ({
+            reference:    item.product.reference,
+            quantity:     item.quantity,
+            weightGrams:  item.product.weightGrams,
+            pricePerGram: item.product.pricePerGram,
+            itemTotal:    item.product.weightGrams * item.product.pricePerGram * item.quantity,
+          })),
+          totalMad: total,
+        });
+
         setState("success");
         clearCart();
         setTimeout(() => {
