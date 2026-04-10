@@ -71,11 +71,10 @@ export default function Filters({
               <button
                 key={cat.value}
                 onClick={() => handleCategoryChange(cat.value)}
-                className={`px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-all duration-200 whitespace-nowrap shrink-0 ${
-                  active
+                className={`px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-all duration-200 whitespace-nowrap shrink-0 ${active
                     ? "bg-gold text-white border-gold shadow-md"
                     : "bg-background text-foreground/70 border-foreground/15 hover:border-gold/50 hover:text-gold"
-                }`}
+                  }`}
               >
                 {t(cat.labelKey)}
               </button>
@@ -93,11 +92,10 @@ export default function Filters({
           <span className="text-xs text-gold font-semibold shrink-0">›</span>
           <button
             onClick={() => setSubCategory("all")}
-            className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all duration-200 whitespace-nowrap shrink-0 ${
-              subCategory === "all"
+            className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all duration-200 whitespace-nowrap shrink-0 ${subCategory === "all"
                 ? "bg-foreground text-background border-foreground shadow-sm"
                 : "bg-background text-foreground/60 border-foreground/15 hover:border-foreground/40"
-            }`}
+              }`}
           >
             Tous
           </button>
@@ -107,11 +105,10 @@ export default function Filters({
               <button
                 key={sub.value}
                 onClick={() => setSubCategory(sub.value)}
-                className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all duration-200 whitespace-nowrap shrink-0 ${
-                  active
+                className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all duration-200 whitespace-nowrap shrink-0 ${active
                     ? "bg-foreground text-background border-foreground shadow-sm"
                     : "bg-background text-foreground/60 border-foreground/15 hover:border-foreground/40"
-                }`}
+                  }`}
               >
                 {t(sub.labelKey)}
               </button>
